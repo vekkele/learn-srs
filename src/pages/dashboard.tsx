@@ -1,19 +1,13 @@
 import type { NextPage } from "next";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Button from "../components/Button";
+import MainLayout from "../components/MainLayout";
 
 const Dashboard: NextPage = () => {
   useSession({ required: true });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 to-[#260f33]">
-      <header className="flex items-center justify-end px-4 py-3">
-        <Button
-          onClick={() => void signOut({ callbackUrl: "/" })}>
-          Sign Out
-        </Button>
-      </header>
+    <MainLayout>
       <main className="flex justify-center p-10">
         <Link
           href="/card/add"
@@ -22,7 +16,7 @@ const Dashboard: NextPage = () => {
           Add Card
         </Link>
       </main>
-    </div>
+    </MainLayout>
   )
 }
 
