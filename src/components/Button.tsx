@@ -1,10 +1,12 @@
-import type { HtmlHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes } from "react";
 
-const Button = ({ onClick, children }: HtmlHTMLAttributes<HTMLButtonElement>) => {
+const Button = ({ onClick, children, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
-      className="rounded-full bg-blue-600 px-10 py-3 font-semibold text-white no-underline transition hover:bg-blue-800"
-      onClick={onClick}>
+      className={`${className} rounded-lg bg-blue-600 px-10 py-3 font-semibold text-white no-underline transition hover:bg-blue-800`}
+      onClick={onClick}
+      {...props}
+    >
       {children}
     </button>
   );
