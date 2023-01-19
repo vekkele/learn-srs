@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
+import Button from "../components/Button";
 
 import { api } from "../utils/api";
 
@@ -16,12 +17,11 @@ const Home: NextPage = () => {
         <p className="text-2xl text-white">
           {hello.data ? hello.data.greeting : "Loading tRPC query..."}
         </p>
-        <button
-          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        <Button
           onClick={() => void signIn(undefined, { callbackUrl: '/dashboard' })}
         >
           Sign in
-        </button>
+        </Button>
       </div>
     </main>
   );
