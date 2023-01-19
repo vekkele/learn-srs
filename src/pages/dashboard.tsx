@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import MainLayout from "../components/MainLayout";
+import AuthHeader from "../components/AuthHeader";
 
 const Dashboard: NextPage = () => {
   useSession({ required: true });
 
   return (
-    <MainLayout>
+    <>
+      <AuthHeader />
       <main className="flex justify-center p-10">
         <Link
           href="/card/add"
@@ -16,7 +17,7 @@ const Dashboard: NextPage = () => {
           Add Card
         </Link>
       </main>
-    </MainLayout>
+    </>
   )
 }
 
