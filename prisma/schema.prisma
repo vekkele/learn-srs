@@ -20,6 +20,37 @@ model Example {
     updatedAt DateTime @updatedAt
 }
 
+model Word {
+    id           String        @id @default(cuid())
+    word         String
+    translations Translation[]
+    nextLearn    DateTime
+    user         User          @relation(fields: [userId], references: [id])
+    userId       String
+    stage        Stage         @relation(fields: [stageId], references: [id])
+    stageId      String
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+}
+
+model Translation {
+    id          String   @id @default(cuid())
+    word        Word     @relation(fields: [wordId], references: [id])
+    wordId      String
+    translation String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Stage {
+    id          String   @id @default(cuid())
+    level       Int      @unique
+    hoursToNext Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    word        Word[]
+}
+
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -55,6 +86,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    words         Word[]
 }
 
 model VerificationToken {
