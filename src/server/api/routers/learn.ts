@@ -11,34 +11,36 @@ export const learnRouter = createTRPCRouter({
       console.log({ input });
       const { word, translation } = input;
 
-      const stage = await ctx.prisma.stage.findUnique({ where: { level: 1 } });
+      return ctx.prisma.$transaction(async (tx) => {
+        const stage = await tx.stage.findUnique({ where: { level: 1 } });
 
-      if (!stage) {
-        return {};
-      }
-
-      const nextLearn = new Date(Date.now() + stage.hoursToNext * 60 * 60 * 1000);
-
-      return ctx.prisma.word.create({
-        data: {
-          word,
-          stage: {
-            connect: {
-              level: 1,
-            },
-          },
-          nextLearn,
-          translations: {
-            create: {
-              translation,
-            }
-          },
-          user: {
-            connect: {
-              id: ctx.session.user.id
-            }
-          },
+        if (!stage) {
+          throw new Error("could not find first stage in database");
         }
+
+        const nextLearn = new Date(Date.now() + stage.hoursToNext * 60 * 60 * 1000);
+
+        return tx.word.create({
+          data: {
+            word,
+            stage: {
+              connect: {
+                level: 1,
+              },
+            },
+            nextLearn,
+            translations: {
+              create: {
+                translation,
+              }
+            },
+            user: {
+              connect: {
+                id: ctx.session.user.id
+              }
+            },
+          }
+        });
       });
     })
 })
