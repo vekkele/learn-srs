@@ -25,8 +25,8 @@ export const learnRouter = createTRPCRouter({
             word,
             stage: {
               connect: {
-                level: 1,
-              },
+                id: stage.id,
+              }
             },
             nextLearn,
             translations: {
