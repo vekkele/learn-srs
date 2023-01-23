@@ -1,14 +1,38 @@
 import { z } from "zod";
+import type { RouterOutputs } from "../root";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
+export type GetWordsOutput = RouterOutputs['learn']['getWords'];
+
 export const learnRouter = createTRPCRouter({
+  getWords: protectedProcedure.query(async ({ ctx }) => {
+    const words = await ctx.prisma.word.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      include: {
+        stage: {
+          select: {
+            level: true,
+          }
+        },
+        translations: {
+          select: {
+            translation: true,
+          }
+        },
+      }
+    });
+
+    return words;
+  }),
+
   addWord: protectedProcedure
     .input(z.object({
       word: z.string(),
       translation: z.string(),
     }))
     .mutation(async ({ input, ctx }) => {
-      console.log({ input });
       const { word, translation } = input;
 
       return ctx.prisma.$transaction(async (tx) => {
