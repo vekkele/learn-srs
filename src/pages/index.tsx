@@ -1,5 +1,7 @@
+import type { GetServerSideProps } from "next";
 import { type NextPage } from "next";
 import AuthHeader from "../components/AuthHeader";
+import { getServerAuthSession } from "../server/auth";
 
 const Home: NextPage = () => {
   return (
@@ -10,6 +12,20 @@ const Home: NextPage = () => {
       </main>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getServerAuthSession(ctx);
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: true,
+      },
+    };
+  }
+
+  return { props: {} };
 };
 
 export default Home;
