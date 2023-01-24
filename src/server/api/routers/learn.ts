@@ -43,6 +43,7 @@ export const learnRouter = createTRPCRouter({
         }
 
         const nextLearn = new Date(Date.now() + stage.hoursToNext * 60 * 60 * 1000);
+        nextLearn.setMinutes(0, 0, 0);
 
         return tx.word.create({
           data: {
