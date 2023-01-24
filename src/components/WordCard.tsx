@@ -1,7 +1,7 @@
-import type { GetWordsOutput } from "../server/api/routers/learn";
+import type { FullWord } from "../types/ReviewQueue";
 
 interface WordCardProps {
-  word: GetWordsOutput[number];
+  word: FullWord;
 }
 
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" })
