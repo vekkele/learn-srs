@@ -1,15 +1,14 @@
 import type {
   GetServerSidePropsContext,
-  GetServerSidePropsResult,
   InferGetServerSidePropsType,
   NextPage
 } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { getServerAuthSession } from "../server/auth";
 import { prisma } from "../server/db";
 import ReviewQueue from "../types/ReviewQueue";
 import { api } from "../utils/api";
+import { checkAuthedSession } from "../utils/auth";
 
 type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -67,21 +66,14 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerAuthSession(ctx);
-
-  const userId = session?.user?.id;
-  if (!userId) {
-    return {
-      redirect: {
-        destination: `/api/auth/signin?error=SessionRequired&callbackUrl=${ctx.resolvedUrl}`,
-        permanent: false,
-      },
-    } satisfies GetServerSidePropsResult<unknown>
+  const { redirect, session } = await checkAuthedSession(ctx);
+  if (redirect) {
+    return { redirect };
   }
 
   const words = await prisma.word.findMany({
     where: {
-      userId,
+      userId: session.user.id,
       nextLearn: {
         lte: new Date()
       }

@@ -1,12 +1,10 @@
-import type { NextPage } from "next";
-import { useSession } from "next-auth/react";
+import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import AuthHeader from "../components/AuthHeader";
 import WordList from "../components/WordList";
+import { checkAuthedSession } from "../utils/auth";
 
 const Dashboard: NextPage = () => {
-  useSession({ required: true });
-
   const linkClass = "p-6 bg-blue-600 hover:bg-blue-800 rounded-md transition text-xl text-white uppercase";
 
   return (
@@ -33,6 +31,15 @@ const Dashboard: NextPage = () => {
       </main>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const props = await checkAuthedSession(ctx);
+  if (props.redirect) {
+    return props;
+  }
+
+  return { props: {} };
 }
 
 export default Dashboard;
