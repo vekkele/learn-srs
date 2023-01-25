@@ -1,6 +1,6 @@
-import type { GetWordsOutput } from "../server/api/routers/learn";
+import type { RouterOutputs } from "../utils/api";
 
-export type FullWord = GetWordsOutput[number];
+export type FullWord = RouterOutputs['learn']['getWords'][number];
 
 export interface ReviewingWord extends FullWord {
   incorrectAnswers: number;

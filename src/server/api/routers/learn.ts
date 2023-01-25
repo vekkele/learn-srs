@@ -1,8 +1,5 @@
 import { z } from "zod";
-import type { RouterOutputs } from "../root";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-
-export type GetWordsOutput = RouterOutputs['learn']['getWords'];
 
 export const learnRouter = createTRPCRouter({
   getWords: protectedProcedure.query(async ({ ctx }) => {
