@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { getServerAuthSession } from "../server/auth";
 import { prisma } from "../server/db";
 import ReviewQueue from "../types/ReviewQueue";
+import { api } from "../utils/api";
 
 type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -17,6 +18,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   const [correct, setCorrect] = useState<null | boolean>(null);
   const [guess, setGuess] = useState("");
   const router = useRouter();
+  const mutation = api.learn.updateStage.useMutation();
 
   useEffect(() => {
     if (queue.isEmpty) {
@@ -27,6 +29,8 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   }, [queue.isEmpty, router]);
 
   const check = () => {
+    if (!queue.next) return;
+
     if (correct === null) {
       if (!guess.trim()) return;
 
@@ -36,7 +40,12 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
     }
 
     if (correct) {
-      //TODO: call api to rise the stage
+      const word = queue.next;
+
+      mutation.mutate({
+        wordId: word.id,
+        incorrectAnswers: word.incorrectAnswers,
+      })
     }
 
     setQueue(v => new ReviewQueue(correct ? v.handleCorrect() : v.handleIncorrect()))

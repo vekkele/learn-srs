@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { computeNextLearn, getNextStage } from "../../../utils/stage";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const learnRouter = createTRPCRouter({
@@ -39,9 +40,6 @@ export const learnRouter = createTRPCRouter({
           throw new Error("could not find first stage in database");
         }
 
-        const nextLearn = new Date(Date.now() + stage.hoursToNext * 60 * 60 * 1000);
-        nextLearn.setMinutes(0, 0, 0);
-
         return tx.word.create({
           data: {
             word,
@@ -50,7 +48,7 @@ export const learnRouter = createTRPCRouter({
                 id: stage.id,
               }
             },
-            nextLearn,
+            nextLearn: computeNextLearn(stage.hoursToNext),
             translations: {
               create: {
                 translation,
@@ -61,6 +59,63 @@ export const learnRouter = createTRPCRouter({
                 id: ctx.session.user.id
               }
             },
+          }
+        });
+      });
+    }),
+
+  updateStage: protectedProcedure
+    .input(z.object({
+      wordId: z.string(),
+      incorrectAnswers: z.number().int()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.$transaction(async (tx) => {
+        const word = await tx.word.findUniqueOrThrow({
+          select: {
+            stage: {
+              select: {
+                level: true,
+              }
+            }
+          },
+          where: {
+            id: input.wordId,
+          }
+        });
+
+        const nextLevel = getNextStage(
+          word.stage.level,
+          input.incorrectAnswers,
+        );
+
+        const nextStage = await tx.stage.findUnique({
+          where: {
+            level: nextLevel
+          },
+          select: {
+            id: true,
+            hoursToNext: true,
+          }
+        })
+
+        if (!nextStage) {
+          throw new Error(`could not set stage to ${nextLevel}`);
+        }
+
+        const nextLearn = computeNextLearn(nextStage.hoursToNext);
+
+        return tx.word.update({
+          where: {
+            id: input.wordId
+          },
+          data: {
+            nextLearn,
+            stage: {
+              connect: {
+                id: nextStage.id,
+              }
+            }
           }
         });
       });
