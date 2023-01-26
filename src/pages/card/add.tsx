@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import Button from "../../components/Button";
+import TextField from "../../components/TextField";
 import { api } from "../../utils/api";
 
 const AddPage: NextPage = () => {
@@ -20,29 +21,23 @@ const AddPage: NextPage = () => {
   return (
     <main className="p-12">
       <form
-        className="flex flex-col"
+        className="flex flex-col max-w-sm"
         onSubmit={(e) => void onSubmit(e)}
       >
-        <label>
-          <p>Word</p>
-          <input
-            id="word-input"
-            name="word"
-            type="text"
-            className="mb-6"
-            onChange={(e) => setWord(e.target.value)}
-          />
-        </label>
-        <label>
-          <p>Translation</p>
-          <input
-            id="translation-input"
-            name="translation"
-            type="text"
-            className="mb-6"
-            onChange={(e) => setTranslation(e.target.value)}
-          />
-        </label>
+        <TextField
+          label="Word"
+          name="word"
+          className="mb-6"
+          placeholder="Enter a word you want to learn"
+          onChange={(e) => setWord(e.target.value)}
+        />
+        <TextField
+          name="translation"
+          label="Translation"
+          className="mb-6"
+          placeholder="Enter a word translation"
+          onChange={(e) => setTranslation(e.target.value)}
+        />
         <div>
           <Button
             type="button"
