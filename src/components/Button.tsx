@@ -7,7 +7,7 @@ const Button = ({ onClick, disabled, children, className = "", ...props }: Butto
       className={clsx(
         className,
         disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-blue-800',
-        'bg-blue-600 rounded-lg px-10 py-3 font-semibold text-white no-underline transition',
+        'bg-blue-600 rounded-lg px-5 py-3 font-semibold text-white no-underline transition',
       )}
       onClick={onClick}
       disabled={disabled}
