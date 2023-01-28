@@ -1,66 +1,57 @@
 import clsx from "clsx";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
 import type { StageTitle } from "../utils/stage";
 import { getStageFromLevel } from "../utils/stage";
 import { stages } from "../utils/stage";
 import WordCard from "./WordCard";
 
+type Words = RouterOutputs['learn']['getWords'];
+
+const stagedWordsSelector = (words: Words) => words.reduce(
+  (stagedWords, word) => {
+    const stage = getStageFromLevel(word.stage.level);
+    const stageWords = stagedWords[stage] ?? [];
+
+    return { ...stagedWords, [stage]: [...stageWords, word] }
+  },
+  {} as Partial<Record<StageTitle, Words>>
+);
+
 const WordList = () => {
-  const wordsResponse = api.learn.getWords.useQuery(undefined, {
-    select: (words) => words.map((w) => ({
-      ...w, stage: {
-        ...w.stage,
-        title: getStageFromLevel(w.stage.level)
-      }
-    }))
+  const stagedWordsResponse = api.learn.getWords.useQuery(undefined, {
+    select: stagedWordsSelector,
   });
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
+  const selectedStageWords = selectedStage ? stagedWordsResponse.data?.[selectedStage] : [];
 
-  const stagesCount = useMemo(() => {
-    const words = wordsResponse.data;
-
-    return stages.map((stage) => {
-      return {
-        ...stage,
-        count: words?.reduce(
-          (prev, w) =>
-            w.stage.title === stage.title
-              ? prev + 1
-              : prev,
-          0
-        ) ?? 0
-      }
-    });
-  }, [wordsResponse.data]);
-
-  const selectedStageWords = useMemo(() =>
-    wordsResponse.data?.filter((word) => word.stage.title === selectedStage),
-    [selectedStage, wordsResponse.data]
-  );
-
-  if (wordsResponse.isLoading) {
-    return <div>Word List Loading...</div>
+  if (stagedWordsResponse.isLoading) {
+    return <div className="my-5">Word List Loading...</div>
   }
 
   return (
     <section className="flex flex-col items-center my-5">
       <h2 className="mb-2">Word List</h2>
       <div className="grid grid-flow-col auto-cols-fr gap-4 flex-wrap">
-        {stagesCount.map(stage => (
-          <div
-            key={stage.title}
-            onClick={() => setSelectedStage(prev => prev === stage.title ? null : stage.title)}
-            className={clsx(
-              stage.bg,
-              'flex flex-col items-center py-4 px-10 rounded-lg text-white select-none',
-              { 'cursor-pointer': stage.count }
-            )}
-          >
-            <h3 className="font-bold text-2xl mb-1">{stage.count}</h3>
-            <h5 className="text-md text-neutral-300 capitalize">{stage.title}</h5>
-          </div>
-        ))}
+        {stages.map(stage => {
+          const count = stagedWordsResponse.data?.[stage.title]?.length ?? 0;
+
+          return (
+            <div
+              key={stage.title}
+              onClick={() => setSelectedStage(prev => prev === stage.title ? null : stage.title)}
+              className={clsx(
+                stage.bg,
+                'flex flex-col items-center py-4 px-10 rounded-lg text-white select-none',
+                { 'cursor-pointer': count }
+              )}
+            >
+              <h3 className="font-bold text-2xl mb-1">{count}</h3>
+              <h5 className="text-md text-neutral-300 capitalize">{stage.title}</h5>
+            </div>
+          )
+        })}
       </div>
       {selectedStage && (
         <section className="w-full mt-3">
