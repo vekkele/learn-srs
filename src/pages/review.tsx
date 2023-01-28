@@ -81,7 +81,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
                 placeholder="Enter one of translations"
                 onChange={(e) => setGuess(e.target.value)}
                 className={clsx(
-                  'w-full px-2 py-4 text-xl rounded-xl text-center text-gray-900 border',
+                  'w-full px-2 py-4 text-xl rounded-xl text-center text-neutral-900 border',
                   {
                     'bg-white border-slate-300': correct === null,
                     'bg-green-600 border-green-800': correct === true,

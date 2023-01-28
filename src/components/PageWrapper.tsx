@@ -6,7 +6,7 @@ type PageWrapperProps = {
 
 const PageWrapper = ({ children }: PageWrapperProps) => {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-neutral-900 dark:text-white">
       {children}
     </div>
   );
