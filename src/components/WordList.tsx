@@ -21,7 +21,7 @@ const wordsSelector = (words: Words) => words.reduce<WordsByStages>(
 
 const WordList = () => {
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
-  const { data: words, isLoading } = api.learn.getWords.useQuery(undefined, {
+  const { data: words, isLoading, isError } = api.learn.getWords.useQuery(undefined, {
     select: wordsSelector,
   });
   const selectedStageWords = selectedStage ? words?.[selectedStage] ?? [] : [];
@@ -30,7 +30,7 @@ const WordList = () => {
     return <div className="mt-10">Loading...</div>
   }
 
-  if (!words) {
+  if (isError) {
     return <div className="mt-10">Something went wrong</div>
   }
 
