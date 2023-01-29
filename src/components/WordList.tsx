@@ -5,7 +5,7 @@ import { api } from "../utils/api";
 import type { StageTitle } from "../utils/stage";
 import { getStageFromLevel } from "../utils/stage";
 import { stages } from "../utils/stage";
-import WordCard from "./WordCard";
+import WordItem from "./WordItem";
 
 type Words = RouterOutputs['learn']['getWords'];
 
@@ -56,7 +56,7 @@ const WordList = () => {
       {selectedStage && (
         <section className="w-full mt-3">
           {selectedStageWords?.map((word) => (
-            <WordCard key={word.id} word={word} />
+            <WordItem key={word.id} word={word} />
           ))}
         </section>
       )}
