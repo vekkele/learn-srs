@@ -34,5 +34,7 @@ export const stages = [
   { title: 'burned', minLevel: 9, maxLevel: 9, bg: clsx('bg-stone-600') },
 ] as const
 
+export const stageMap = new Map(stages.map(stage => [stage.title, stage]))
+
 export type StageData = (typeof stages)[number];
 export type StageTitle = StageData['title'];

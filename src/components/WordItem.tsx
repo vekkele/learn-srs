@@ -6,23 +6,16 @@ interface WordCardProps {
 
 const dateFormat = new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" })
 
-const WordCard = ({ word }: WordCardProps) => {
+const WordItem = ({ word }: WordCardProps) => {
+  const translations = word.translations.map(t => t.translation).join(', ');
+
   return (
-    <article className="bg-blue-400/40 px-5 py-4 rounded-md text-white">
-      <h3>Word: {word.word}</h3>
-
-      <div>
-        <h3>Translations:</h3>
-        <div className="flex flex-wrap">
-          {word.translations.map(t => (
-            <h4 key={t.translation}>{t.translation}</h4>
-          ))}
-        </div>
-      </div>
-
-      <h5>Next Review: {dateFormat.format(word.nextLearn)}</h5>
+    <article className="flex text-white">
+      <h3 className="flex-grow w-28 mr-4 font-bold text-lg capitalize">{word.word}</h3>
+      <h5 className="flex-grow-[4] w-52 text-base text-neutral-300 capitalize">{translations}</h5>
+      <h6 className="w-36 ml-2">{dateFormat.format(word.nextLearn)}</h6>
     </article>
   )
 }
 
-export default WordCard;
+export default WordItem;

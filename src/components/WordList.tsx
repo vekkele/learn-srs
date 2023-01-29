@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
 import type { StageTitle } from "../utils/stage";
+import { stageMap } from "../utils/stage";
 import { getStageFromLevel } from "../utils/stage";
 import { stages } from "../utils/stage";
 import WordItem from "./WordItem";
@@ -24,7 +25,7 @@ const WordList = () => {
     select: stagedWordsSelector,
   });
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
-  const selectedStageWords = selectedStage ? stagedWordsResponse.data?.[selectedStage] : [];
+  const selectedStageWords = selectedStage ? stagedWordsResponse.data?.[selectedStage] ?? [] : [];
 
   if (stagedWordsResponse.isLoading) {
     return <div className="my-5">Word List Loading...</div>
@@ -53,8 +54,11 @@ const WordList = () => {
           )
         })}
       </div>
-      {selectedStage && (
-        <section className="w-full mt-3">
+      {selectedStage && selectedStageWords.length !== 0 && (
+        <section className={clsx(
+          'w-full mt-3 py-2 px-4 rounded-lg',
+          stageMap.get(selectedStage)?.bg
+        )}>
           {selectedStageWords?.map((word) => (
             <WordItem key={word.id} word={word} />
           ))}
