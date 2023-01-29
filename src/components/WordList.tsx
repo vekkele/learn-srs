@@ -3,40 +3,42 @@ import { useState } from "react";
 import type { RouterOutputs } from "../utils/api";
 import { api } from "../utils/api";
 import type { StageTitle } from "../utils/stage";
-import { stageMap } from "../utils/stage";
-import { getStageFromLevel } from "../utils/stage";
-import { stages } from "../utils/stage";
+import { getStageFromLevel, stageMap, stages } from "../utils/stage";
 import WordItem from "./WordItem";
 
 type Words = RouterOutputs['learn']['getWords'];
+type WordsByStages = Partial<Record<StageTitle, Words>>;
 
-const stagedWordsSelector = (words: Words) => words.reduce(
+const wordsSelector = (words: Words) => words.reduce<WordsByStages>(
   (stagedWords, word) => {
     const stage = getStageFromLevel(word.stage.level);
     const stageWords = stagedWords[stage] ?? [];
 
     return { ...stagedWords, [stage]: [...stageWords, word] }
   },
-  {} as Partial<Record<StageTitle, Words>>
+  {}
 );
 
 const WordList = () => {
-  const stagedWordsResponse = api.learn.getWords.useQuery(undefined, {
-    select: stagedWordsSelector,
-  });
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
-  const selectedStageWords = selectedStage ? stagedWordsResponse.data?.[selectedStage] ?? [] : [];
+  const { data: words, isLoading } = api.learn.getWords.useQuery(undefined, {
+    select: wordsSelector,
+  });
+  const selectedStageWords = selectedStage ? words?.[selectedStage] ?? [] : [];
 
-  if (stagedWordsResponse.isLoading) {
-    return <div className="my-5">Word List Loading...</div>
+  if (isLoading) {
+    return <div className="mt-10">Loading...</div>
+  }
+
+  if (!words) {
+    return <div className="mt-10">Something went wrong</div>
   }
 
   return (
     <section className="flex flex-col items-center my-5">
-      <h2 className="mb-2">Word List</h2>
-      <div className="grid grid-flow-col auto-cols-fr gap-4 flex-wrap">
+      <div className="grid grid-flow-col auto-cols-fr gap-4">
         {stages.map(stage => {
-          const count = stagedWordsResponse.data?.[stage.title]?.length ?? 0;
+          const count = words[stage.title]?.length ?? 0;
 
           return (
             <div

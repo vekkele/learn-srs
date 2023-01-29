@@ -19,10 +19,23 @@ export const learnRouter = createTRPCRouter({
             translation: true,
           }
         },
-      }
+      },
     });
 
     return words;
+  }),
+
+  getReviewsCount: protectedProcedure.query(async ({ ctx }) => {
+    const reviewsCount = await ctx.prisma.word.count({
+      where: {
+        userId: ctx.session.user.id,
+        nextLearn: {
+          lte: new Date(),
+        }
+      },
+    });
+
+    return reviewsCount;
   }),
 
   addWord: protectedProcedure
