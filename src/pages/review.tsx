@@ -7,14 +7,14 @@ import type {
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import colors from 'tailwindcss/colors';
 import Button from "../components/Button";
 import { prisma } from "../server/db";
 import ReviewQueue from "../types/ReviewQueue";
 import { api } from "../utils/api";
 import { checkAuthedSession } from "../utils/auth";
+import { getStageFromLevel, stageMap } from "../utils/stage";
 
-type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+export type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   const [queue, setQueue] = useState(() => ReviewQueue.from(words))
@@ -26,6 +26,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   const answered = correct !== null;
   const word = queue.next;
   const toggleInfoVisible = () => setInfoVisible(visible => !visible);
+  const stageColor = (word && stageMap.get(word.stage.title))?.color;
 
   useEffect(() => {
     if (queue.isEmpty) {
@@ -63,11 +64,14 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   return (
     <>
       <Head>
-        <meta name="theme-color" content={colors.purple[600]} key="theme-color-light" />
-        <meta name="theme-color" content={colors.purple[600]} key="theme-color-dark" />
+        <meta name="theme-color" content={stageColor} key="theme-color-light" />
+        <meta name="theme-color" content={stageColor} key="theme-color-dark" />
       </Head>
       <main className="flex flex-col h-full grow">
-        <section className="flex justify-center items-center h-[50vh] w-full bg-purple-600">
+        <section
+          style={{ backgroundColor: stageColor }}
+          className="flex justify-center items-center h-[50vh] w-full"
+        >
           <h1 className="text-7xl text-white uppercase">{word?.word}</h1>
         </section>
         <section className="flex items-start grow">
@@ -143,7 +147,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      words
+      words: words.map(
+        word => ({
+          ...word,
+          stage: {
+            ...word.stage,
+            title: getStageFromLevel(word.stage.level)
+          }
+        })
+      )
     }
   }
 }

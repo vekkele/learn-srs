@@ -42,8 +42,8 @@ const WordList = () => {
             <div
               key={stage.title}
               onClick={() => setSelectedStage(prev => prev === stage.title ? null : stage.title)}
+              style={{ backgroundColor: stage.color }}
               className={clsx(
-                stage.bg,
                 'flex flex-col items-center py-4 px-10 rounded-lg text-white select-none',
                 { 'cursor-pointer': count }
               )}
@@ -55,10 +55,10 @@ const WordList = () => {
         })}
       </div>
       {selectedStage && selectedStageWords.length !== 0 && (
-        <section className={clsx(
-          'w-full mt-3 py-2 px-4 rounded-lg',
-          stageMap.get(selectedStage)?.bg
-        )}>
+        <section
+          style={{ backgroundColor: stageMap.get(selectedStage)?.color }}
+          className='w-full mt-3 py-2 px-4 rounded-lg'
+        >
           {selectedStageWords?.map((word) => (
             <WordItem key={word.id} word={word} />
           ))}

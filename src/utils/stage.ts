@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import colors from "tailwindcss/colors";
 
 export const computeNextLearn = (hoursToNextStage: number) => {
   const nextLearn = new Date(Date.now() + hoursToNextStage * 60 * 60 * 1000);
@@ -27,11 +27,11 @@ export function getStageFromLevel(level: number) {
 }
 
 export const stages = [
-  { title: 'apprentice', minLevel: 1, maxLevel: 4, bg: clsx('bg-pink-600') },
-  { title: 'guru', minLevel: 5, maxLevel: 6, bg: clsx('bg-purple-600') },
-  { title: 'master', minLevel: 7, maxLevel: 7, bg: clsx('bg-blue-600') },
-  { title: 'enlightened', minLevel: 8, maxLevel: 8, bg: clsx('bg-sky-600') },
-  { title: 'burned', minLevel: 9, maxLevel: 9, bg: clsx('bg-stone-600') },
+  { title: 'apprentice', minLevel: 1, maxLevel: 4, color: colors.pink[600] },
+  { title: 'guru', minLevel: 5, maxLevel: 6, color: colors.purple[600] },
+  { title: 'master', minLevel: 7, maxLevel: 7, color: colors.blue[600] },
+  { title: 'enlightened', minLevel: 8, maxLevel: 8, color: colors.sky[600] },
+  { title: 'burned', minLevel: 9, maxLevel: 9, color: colors.stone[600] },
 ] as const
 
 export const stageMap = new Map(stages.map(stage => [stage.title, stage]))

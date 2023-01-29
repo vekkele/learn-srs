@@ -1,8 +1,8 @@
-import type { RouterOutputs } from "../utils/api";
+import type { ReviewPageProps } from "../pages/review";
 
-export type FullWord = RouterOutputs['learn']['getWords'][number];
+type Word = ReviewPageProps['words'][number];
 
-export interface ReviewingWord extends FullWord {
+export interface ReviewingWord extends Word {
   incorrectAnswers: number;
 }
 
@@ -11,7 +11,7 @@ export default class ReviewQueue {
     private readonly words: ReviewingWord[]
   ) { }
 
-  static from(words: FullWord[]) {
+  static from(words: Word[]) {
     return new ReviewQueue(words.map(w => ({ ...w, incorrectAnswers: 0 })))
   }
 
