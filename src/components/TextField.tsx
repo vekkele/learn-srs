@@ -16,7 +16,7 @@ const TextField = ({ label, className, ...props }: TextFieldProps) => {
       <input
         className={clsx(
           className,
-          "p-2 rounded-md border border-slate-300",
+          "p-2 rounded-md border border-slate-300 text-neutral-900",
         )}
         {...props}
       />
