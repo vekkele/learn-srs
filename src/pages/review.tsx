@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -7,14 +6,16 @@ import type {
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Button from "../components/Button";
-import { prisma } from "../server/db";
+import clsx from "clsx";
+
+import { createTRPCCaller } from "../server/api/root";
 import ReviewQueue from "../types/ReviewQueue";
 import { api } from "../utils/api";
 import { checkAuthedSession } from "../utils/auth";
-import { getStageFromLevel, stageMap } from "../utils/stage";
+import { stageMap } from "../utils/stage";
+import Button from "../components/Button";
 
-export type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
   const [queue, setQueue] = useState(() => ReviewQueue.from(words))
@@ -119,45 +120,15 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { redirect, session } = await checkAuthedSession(ctx);
+  const { redirect } = await checkAuthedSession(ctx);
   if (redirect) {
     return { redirect };
   }
 
-  const words = await prisma.word.findMany({
-    where: {
-      userId: session.user.id,
-      nextLearn: {
-        lte: new Date()
-      }
-    },
-    include: {
-      stage: {
-        select: {
-          level: true,
-        }
-      },
-      translations: {
-        select: {
-          translation: true,
-        }
-      },
-    }
-  });
+  const trpc = await createTRPCCaller(ctx);
+  const words = await trpc.learn.getReviewWords();
 
-  return {
-    props: {
-      words: words.map(
-        word => ({
-          ...word,
-          stage: {
-            ...word.stage,
-            title: getStageFromLevel(word.stage.level)
-          }
-        })
-      )
-    }
-  }
+  return { props: { words } };
 }
 
 export default ReviewPage;

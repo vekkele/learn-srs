@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { computeNextLearn, getNextStage } from "../../../utils/stage";
+import { computeNextLearn, getNextStage, getStageFromLevel } from "../../../utils/stage";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const learnRouter = createTRPCRouter({
@@ -36,6 +36,39 @@ export const learnRouter = createTRPCRouter({
     });
 
     return reviewsCount;
+  }),
+
+  getReviewWords: protectedProcedure.query(async ({ ctx }) => {
+    const words = await ctx.prisma.word.findMany({
+      where: {
+        userId: ctx.session.user.id,
+        nextLearn: {
+          lte: new Date()
+        }
+      },
+      include: {
+        stage: {
+          select: {
+            level: true,
+          }
+        },
+        translations: {
+          select: {
+            translation: true,
+          }
+        },
+      }
+    });
+
+    return words.map(
+      word => ({
+        ...word,
+        stage: {
+          ...word.stage,
+          title: getStageFromLevel(word.stage.level)
+        }
+      })
+    );
   }),
 
   addWord: protectedProcedure

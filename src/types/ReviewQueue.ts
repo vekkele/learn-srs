@@ -1,6 +1,6 @@
-import type { ReviewPageProps } from "../pages/review";
+import type { RouterOutputs } from "../utils/api";
 
-type Word = ReviewPageProps['words'][number];
+type Word = RouterOutputs['learn']['getReviewWords'][number];
 
 export interface ReviewingWord extends Word {
   incorrectAnswers: number;
