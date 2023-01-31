@@ -1,6 +1,4 @@
-import type { RouterOutputs } from "../utils/api";
-
-type Word = RouterOutputs["learn"]["getWords"][number];
+import type { Word } from "./types";
 
 interface WordItemProps {
   word: Word;

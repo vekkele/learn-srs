@@ -1,15 +1,14 @@
 import clsx from "clsx";
 import { useState } from "react";
-import type { RouterOutputs } from "../utils/api";
-import { api } from "../utils/api";
-import type { StageTitle } from "../utils/stage";
-import { getStageFromLevel, stageMap, stages } from "../utils/stage";
+import { api } from "../../utils/api";
+import type { StageTitle } from "../../utils/stage";
+import { getStageFromLevel, stageMap, stages } from "../../utils/stage";
+import type { Word } from "./types";
 import WordItem from "./WordItem";
 
-type Words = RouterOutputs["learn"]["getWords"];
-type WordsByStages = Partial<Record<StageTitle, Words>>;
+type WordsByStages = Partial<Record<StageTitle, Word[]>>;
 
-const wordsSelector = (words: Words) =>
+const wordsSelector = (words: Word[]) =>
   words.reduce<WordsByStages>((stagedWords, word) => {
     const stage = getStageFromLevel(word.stage.level);
     const stageWords = stagedWords[stage] ?? [];
