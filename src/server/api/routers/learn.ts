@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { computeNextLearn, getNextStage, getStageFromLevel } from "../../../utils/stage";
+import {
+  computeNextLearn,
+  getNextStage,
+  getStageFromLevel,
+} from "../../../utils/stage";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const learnRouter = createTRPCRouter({
@@ -12,12 +16,12 @@ export const learnRouter = createTRPCRouter({
         stage: {
           select: {
             level: true,
-          }
+          },
         },
         translations: {
           select: {
             translation: true,
-          }
+          },
         },
       },
     });
@@ -31,7 +35,7 @@ export const learnRouter = createTRPCRouter({
         userId: ctx.session.user.id,
         nextLearn: {
           lte: new Date(),
-        }
+        },
       },
     });
 
@@ -43,39 +47,39 @@ export const learnRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
         nextLearn: {
-          lte: new Date()
-        }
+          lte: new Date(),
+        },
       },
       include: {
         stage: {
           select: {
             level: true,
-          }
+          },
         },
         translations: {
           select: {
             translation: true,
-          }
+          },
         },
-      }
+      },
     });
 
-    return words.map(
-      word => ({
-        ...word,
-        stage: {
-          ...word.stage,
-          title: getStageFromLevel(word.stage.level)
-        }
-      })
-    );
+    return words.map((word) => ({
+      ...word,
+      stage: {
+        ...word.stage,
+        title: getStageFromLevel(word.stage.level),
+      },
+    }));
   }),
 
   addWord: protectedProcedure
-    .input(z.object({
-      word: z.string().trim().min(1),
-      translations: z.string().trim().min(1).array().min(1),
-    }))
+    .input(
+      z.object({
+        word: z.string().trim().min(1),
+        translations: z.string().trim().min(1).array().min(1),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       const { word, translations } = input;
 
@@ -92,29 +96,31 @@ export const learnRouter = createTRPCRouter({
             stage: {
               connect: {
                 id: stage.id,
-              }
+              },
             },
             nextLearn: computeNextLearn(stage.hoursToNext),
             translations: {
-              create: translations.map(translation => ({
+              create: translations.map((translation) => ({
                 translation,
-              }))
+              })),
             },
             user: {
               connect: {
-                id: ctx.session.user.id
-              }
+                id: ctx.session.user.id,
+              },
             },
-          }
+          },
         });
       });
     }),
 
   updateStage: protectedProcedure
-    .input(z.object({
-      wordId: z.string(),
-      incorrectAnswers: z.number().int()
-    }))
+    .input(
+      z.object({
+        wordId: z.string(),
+        incorrectAnswers: z.number().int(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       return ctx.prisma.$transaction(async (tx) => {
         const word = await tx.word.findUniqueOrThrow({
@@ -122,28 +128,28 @@ export const learnRouter = createTRPCRouter({
             stage: {
               select: {
                 level: true,
-              }
-            }
+              },
+            },
           },
           where: {
             id: input.wordId,
-          }
+          },
         });
 
         const nextLevel = getNextStage(
           word.stage.level,
-          input.incorrectAnswers,
+          input.incorrectAnswers
         );
 
         const nextStage = await tx.stage.findUnique({
           where: {
-            level: nextLevel
+            level: nextLevel,
           },
           select: {
             id: true,
             hoursToNext: true,
-          }
-        })
+          },
+        });
 
         if (!nextStage) {
           throw new Error(`could not set stage to ${nextLevel}`);
@@ -153,17 +159,17 @@ export const learnRouter = createTRPCRouter({
 
         return tx.word.update({
           where: {
-            id: input.wordId
+            id: input.wordId,
           },
           data: {
             nextLearn,
             stage: {
               connect: {
                 id: nextStage.id,
-              }
-            }
-          }
+              },
+            },
+          },
         });
       });
-    })
-})
+    }),
+});

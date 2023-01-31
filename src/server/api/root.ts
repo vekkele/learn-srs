@@ -19,5 +19,5 @@ export const createTRPCCaller = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
   const trpcCtx = createInnerTRPCContext({ session });
 
-  return appRouter.createCaller(trpcCtx)
-}
+  return appRouter.createCaller(trpcCtx);
+};

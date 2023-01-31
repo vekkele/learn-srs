@@ -47,14 +47,12 @@ async function main() {
     },
   });
 
-
   const master = await prisma.stage.create({
     data: {
       level: 7,
       hoursToNext: HOURS_IN_MONTH * 1,
     },
   });
-
 
   const enlightened = await prisma.stage.create({
     data: {
@@ -71,22 +69,26 @@ async function main() {
   });
 
   const stages = {
-    apprenice1, apprenice2, apprenice3, apprenice4,
-    guru1, guru2,
+    apprenice1,
+    apprenice2,
+    apprenice3,
+    apprenice4,
+    guru1,
+    guru2,
     master,
     enlightened,
     burned,
-  }
+  };
 
   console.dir(stages, { depth: null });
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect()
+    await prisma.$disconnect();
   })
   .catch(async (e) => {
     console.error(e);
     await prisma.$disconnect();
     process.exit(1);
-  })
+  });

@@ -19,19 +19,19 @@ const AddPage: NextPage = () => {
   const canSubmit = filledTranslations.length !== 0 && !!word;
 
   const removeTranslation = (i: number) => {
-    setTranslations(prev => [...prev.slice(0, i), ...prev.slice(i + 1)]);
-  }
+    setTranslations((prev) => [...prev.slice(0, i), ...prev.slice(i + 1)]);
+  };
 
   const changeTranslation = (value: string, i: number) => {
-    setTranslations(prev => {
+    setTranslations((prev) => {
       let changed = [...prev.slice(0, i), value, ...prev.slice(i + 1)];
       if (i === translations.length - 1) {
-        changed = [...changed, ''];
+        changed = [...changed, ""];
       }
 
       return changed;
     });
-  }
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +47,7 @@ const AddPage: NextPage = () => {
   return (
     <main className="p-12">
       <form
-        className="flex flex-col max-w-sm"
+        className="flex max-w-sm flex-col"
         onSubmit={(e) => void onSubmit(e)}
       >
         <TextField
@@ -58,9 +58,9 @@ const AddPage: NextPage = () => {
           onChange={(e) => setWord(e.target.value)}
           required
         />
-        <h3 className="font-bold mb-2">Translations</h3>
+        <h3 className="mb-2 font-bold">Translations</h3>
         {translations.map((translation, i) => (
-          <div key={i} className="flex items-center mb-4">
+          <div key={i} className="mb-4 flex items-center">
             <TextField
               name="translation"
               value={translation}
@@ -69,7 +69,7 @@ const AddPage: NextPage = () => {
             />
             {translations.length > 1 && (
               <button
-                className="py-1 px-3 bg-red-500 rounded-md ml-2 text-white"
+                className="ml-2 rounded-md bg-red-500 py-1 px-3 text-white"
                 type="button"
                 onClick={() => removeTranslation(i)}
               >
@@ -81,20 +81,17 @@ const AddPage: NextPage = () => {
         <div>
           <Button
             className="mr-3"
-            onClick={() => void router.push('/dashboard')}
+            onClick={() => void router.push("/dashboard")}
           >
             Cancel
           </Button>
-          <Button
-            disabled={!canSubmit}
-            type="submit"
-          >
+          <Button disabled={!canSubmit} type="submit">
             Save
           </Button>
         </div>
       </form>
     </main>
-  )
-}
+  );
+};
 
 export default AddPage;

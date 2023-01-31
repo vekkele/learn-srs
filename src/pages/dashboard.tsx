@@ -17,26 +17,20 @@ const Dashboard: NextPage = () => {
     <>
       <AuthHeader />
       <main className="flex flex-col items-center p-10">
-        <div className="grid grid-flow-col auto-cols-fr gap-5">
+        <div className="grid auto-cols-fr grid-flow-col gap-5">
           <Link
             href="/card/add"
-            className={clsx(
-              buttonClass,
-              'flex flex-col items-center'
-            )}
+            className={clsx(buttonClass, "flex flex-col items-center")}
           >
             Add Word
           </Link>
 
           <Link
             href="/review"
-            className={clsx(
-              buttonClass,
-              'flex justify-between items-center'
-            )}
+            className={clsx(buttonClass, "flex items-center justify-between")}
           >
             <h2>Reviews</h2>
-            <h3 className="px-3 ml-4 bg-blue-400 rounded-full text-sm">
+            <h3 className="ml-4 rounded-full bg-blue-400 px-3 text-sm">
               {reviewsCount}
             </h3>
           </Link>
@@ -45,8 +39,8 @@ const Dashboard: NextPage = () => {
         <WordList />
       </main>
     </>
-  )
-}
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const props = await checkAuthedSession(ctx);
@@ -55,6 +49,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   return { props: {} };
-}
+};
 
 export default Dashboard;

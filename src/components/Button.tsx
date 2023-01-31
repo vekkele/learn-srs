@@ -1,13 +1,20 @@
 import clsx from "clsx";
 import type { ButtonHTMLAttributes } from "react";
 
-const Button = ({ onClick, disabled, children, className = "", type = 'button', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
+const Button = ({
+  onClick,
+  disabled,
+  children,
+  className = "",
+  type = "button",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       className={clsx(
         className,
-        disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-blue-800',
-        'bg-blue-600 rounded-lg px-5 py-3 font-semibold text-white no-underline transition',
+        disabled ? "cursor-not-allowed opacity-40" : "hover:bg-blue-800",
+        "rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white no-underline transition"
       )}
       onClick={onClick}
       disabled={disabled}
@@ -17,6 +24,6 @@ const Button = ({ onClick, disabled, children, className = "", type = 'button', 
       {children}
     </button>
   );
-}
+};
 
 export default Button;
