@@ -17,7 +17,7 @@ const wordsSelector = (words: Words) =>
     return { ...stagedWords, [stage]: [...stageWords, word] };
   }, {});
 
-const WordList = () => {
+const WordsTable = () => {
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
   const {
     data: words,
@@ -78,4 +78,4 @@ const WordList = () => {
   );
 };
 
-export default WordList;
+export default WordsTable;

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import type { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import AuthHeader from "../components/AuthHeader";
-import WordList from "../components/WordList";
+import WordsTable from "../components/WordsTable";
 import { api } from "../utils/api";
 import { checkAuthedSession } from "../utils/auth";
 
@@ -36,7 +36,7 @@ const Dashboard: NextPage = () => {
           </Link>
         </div>
 
-        <WordList />
+        <WordsTable />
       </main>
     </>
   );
