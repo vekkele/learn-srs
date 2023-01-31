@@ -1,8 +1,8 @@
-import clsx from "clsx";
 import { useState } from "react";
 import { api } from "../../utils/api";
 import type { StageTitle } from "../../utils/stage";
 import { getStageFromLevel, stageMap, stages } from "../../utils/stage";
+import StageCard from "./StageCard";
 import type { Word } from "./types";
 import WordItem from "./WordItem";
 
@@ -40,29 +40,24 @@ const WordsTable = () => {
       <div className="grid auto-cols-fr grid-flow-col gap-4">
         {stages.map((stage) => {
           const count = words[stage.title]?.length ?? 0;
+          const onClick = () => {
+            setSelectedStage((prev) =>
+              prev === stage.title ? null : stage.title
+            );
+          };
 
           return (
-            <div
+            <StageCard
               key={stage.title}
-              onClick={() =>
-                setSelectedStage((prev) =>
-                  prev === stage.title ? null : stage.title
-                )
-              }
-              style={{ backgroundColor: stage.color }}
-              className={clsx(
-                "flex select-none flex-col items-center rounded-lg py-4 px-10 text-white",
-                { "cursor-pointer": count }
-              )}
-            >
-              <h3 className="mb-1 text-2xl font-bold">{count}</h3>
-              <h5 className="text-md capitalize text-neutral-300">
-                {stage.title}
-              </h5>
-            </div>
+              title={stage.title}
+              color={stage.color}
+              wordsCount={count}
+              onClick={onClick}
+            />
           );
         })}
       </div>
+
       {selectedStage && selectedStageWords.length !== 0 && (
         <section
           style={{ backgroundColor: stageMap.get(selectedStage)?.color }}
