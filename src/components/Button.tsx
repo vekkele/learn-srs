@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import type { ButtonHTMLAttributes } from "react";
 
-const Button = ({ onClick, disabled, children, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
+const Button = ({ onClick, disabled, children, className = "", type = 'button', ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
       className={clsx(
@@ -11,6 +11,7 @@ const Button = ({ onClick, disabled, children, className = "", ...props }: Butto
       )}
       onClick={onClick}
       disabled={disabled}
+      type={type}
       {...props}
     >
       {children}
