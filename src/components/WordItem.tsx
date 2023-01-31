@@ -1,7 +1,9 @@
-import type { FullWord } from "../types/ReviewQueue";
+import type { RouterOutputs } from "../utils/api";
 
-interface WordCardProps {
-  word: FullWord;
+type Word = RouterOutputs["learn"]["getWords"][number];
+
+interface WordItemProps {
+  word: Word;
 }
 
 const dateFormat = new Intl.DateTimeFormat(undefined, {
@@ -9,7 +11,7 @@ const dateFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 
-const WordItem = ({ word }: WordCardProps) => {
+const WordItem = ({ word }: WordItemProps) => {
   const translations = word.translations.map((t) => t.translation).join(", ");
 
   return (
