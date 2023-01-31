@@ -73,11 +73,11 @@ export const learnRouter = createTRPCRouter({
 
   addWord: protectedProcedure
     .input(z.object({
-      word: z.string(),
-      translation: z.string(),
+      word: z.string().trim().min(1),
+      translations: z.string().trim().min(1).array().min(1),
     }))
     .mutation(async ({ input, ctx }) => {
-      const { word, translation } = input;
+      const { word, translations } = input;
 
       return ctx.prisma.$transaction(async (tx) => {
         const stage = await tx.stage.findUnique({ where: { level: 1 } });
@@ -96,9 +96,9 @@ export const learnRouter = createTRPCRouter({
             },
             nextLearn: computeNextLearn(stage.hoursToNext),
             translations: {
-              create: {
+              create: translations.map(translation => ({
                 translation,
-              }
+              }))
             },
             user: {
               connect: {
