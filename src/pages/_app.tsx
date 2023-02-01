@@ -8,6 +8,7 @@ import "../styles/globals.css";
 import Head from "next/head";
 import PageWrapper from "../components/PageWrapper";
 import colors from "tailwindcss/colors";
+import { appWithTranslation } from "next-i18next";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -41,4 +42,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(appWithTranslation(MyApp));
