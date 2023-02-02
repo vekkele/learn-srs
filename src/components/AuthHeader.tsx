@@ -4,19 +4,17 @@ import Button from "./Button";
 const AuthHeader = () => {
   const { data: session } = useSession();
 
-  const authButton = session ? (
-    <Button onClick={() => void signOut({ callbackUrl: "/" })}>Sign Out</Button>
-  ) : (
-    <Button
-      onClick={() => void signIn(undefined, { callbackUrl: "/dashboard" })}
-    >
-      Sign in
-    </Button>
-  );
+  const handleSignIn = () =>
+    void signIn(undefined, { callbackUrl: "/dashboard" });
+  const handleSignOut = () => void signOut({ callbackUrl: "/" });
 
   return (
     <header className="flex items-center justify-end px-4 py-3">
-      {authButton}
+      {session ? (
+        <Button onClick={handleSignOut}>Sign Out</Button>
+      ) : (
+        <Button onClick={handleSignIn}>Sign in</Button>
+      )}
     </header>
   );
 };
