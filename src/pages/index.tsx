@@ -26,7 +26,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const translations = await getServerTranslations(ctx.locale, ["auth"]);
+  const translations = await getServerTranslations(ctx.locale, [
+    "common",
+    "auth",
+  ]);
 
   return { props: { ...translations } };
 };
