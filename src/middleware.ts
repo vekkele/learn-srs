@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import acceptLanguage from "accept-language";
 
-import { locales, stubDefault, realDefault } from "../i18n.mjs";
+import { locales, stubDefault, defaultLocale } from "../i18n.mjs";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -19,7 +19,7 @@ export function middleware(req: NextRequest) {
 
   if (req.nextUrl.locale === stubDefault) {
     const locale =
-      acceptLanguage.get(req.headers.get("Accept-Language")) ?? realDefault;
+      acceptLanguage.get(req.headers.get("Accept-Language")) ?? defaultLocale;
 
     return NextResponse.redirect(
       new URL(`/${locale}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url)

@@ -2,7 +2,7 @@
 export const locales = ["en", "ru"];
 
 export const stubDefault = "default";
-export const realDefault = "en";
+export const defaultLocale = "en";
 
 /** @type {NonNullable<import("next").NextConfig["i18n"]>} */
 const i18n = {
