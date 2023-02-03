@@ -1,0 +1,9 @@
+{
+  "word.label": "Word",
+  "word.placeholder": "Enter a word you want to learn",
+  "translations.label": "Translations",
+  "translations.placeholder": "Enter a word translation",
+  "actions.remove": "Remove",
+  "actions.cancel": "Cancel",
+  "actions.save": "Save"
+}

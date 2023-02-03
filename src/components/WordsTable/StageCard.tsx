@@ -1,13 +1,17 @@
 import clsx from "clsx";
+import { useTranslation } from "next-i18next";
+import type { StageTitle } from "../../utils/stage";
 
 interface StageCardProps {
-  title: string;
+  title: StageTitle;
   wordsCount: number;
   color: string;
   onClick: VoidFunction;
 }
 
 const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {
+  const { t } = useTranslation("dashboard");
+
   return (
     <div
       onClick={onClick}
@@ -18,7 +22,9 @@ const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {
       )}
     >
       <h3 className="mb-1 text-2xl font-bold">{wordsCount}</h3>
-      <h5 className="text-md capitalize text-neutral-300">{title}</h5>
+      <h5 className="text-md capitalize text-neutral-300">
+        {t(`stages.${title}`)}
+      </h5>
     </div>
   );
 };

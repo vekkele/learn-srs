@@ -2,6 +2,7 @@ import type { GetServerSideProps } from "next";
 import { type NextPage } from "next";
 import AuthHeader from "../components/AuthHeader";
 import { getServerAuthSession } from "../server/auth";
+import { getServerTranslations } from "../utils/i18n";
 
 const Home: NextPage = () => {
   return (
@@ -25,7 +26,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  return { props: {} };
+  const translations = await getServerTranslations(ctx.locale, ["auth"]);
+
+  return { props: { ...translations } };
 };
 
 export default Home;

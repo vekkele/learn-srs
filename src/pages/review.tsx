@@ -14,10 +14,13 @@ import { api } from "../utils/api";
 import { checkAuthedSession } from "../utils/auth";
 import { stageMap } from "../utils/stage";
 import Button from "../components/Button";
+import { useTranslation } from "next-i18next";
+import { getServerTranslations } from "../utils/i18n";
 
 type ReviewPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
+  const { t } = useTranslation("review");
   const [queue, setQueue] = useState(() => ReviewQueue.from(words));
   const [correct, setCorrect] = useState<null | boolean>(null);
   const [guess, setGuess] = useState("");
@@ -85,7 +88,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
                 name="guess"
                 readOnly={answered}
                 value={guess}
-                placeholder="Enter one of translations"
+                placeholder={t("translationPlaceholder")}
                 onChange={(e) => setGuess(e.target.value)}
                 className={clsx(
                   "w-full rounded-xl border px-2 py-4 text-center text-xl text-neutral-900",
@@ -106,11 +109,11 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
             </div>
 
             <Button disabled={!answered} onClick={toggleInfoVisible}>
-              Show Info
+              {t("showInfo")}
             </Button>
             {infoVisible && (
               <section className="my-3 rounded-lg bg-slate-200 py-4 px-6 dark:bg-slate-800">
-                <h2 className="mb-2 text-xl font-bold">Translations</h2>
+                <h2 className="mb-2 text-xl font-bold">{t("translations")}</h2>
                 {word?.translations.map((t) => (
                   <h2 key={t.translation}>{t.translation}</h2>
                 ))}
@@ -131,8 +134,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 
   const trpc = await createTRPCCaller(ctx);
   const words = await trpc.learn.getReviewWords();
+  const translations = await getServerTranslations(ctx.locale, ["review"]);
 
-  return { props: { words } };
+  return { props: { ...translations, words } };
 };
 
 export default ReviewPage;

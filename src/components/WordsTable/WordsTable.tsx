@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 import { api } from "../../utils/api";
 import type { StageTitle } from "../../utils/stage";
 import { getStageFromLevel, stageMap, stages } from "../../utils/stage";
@@ -17,6 +18,7 @@ const wordsSelector = (words: Word[]) =>
   }, {});
 
 const WordsTable = () => {
+  const { t } = useTranslation();
   const [selectedStage, setSelectedStage] = useState<StageTitle | null>(null);
   const {
     data: words,
@@ -28,11 +30,11 @@ const WordsTable = () => {
   const selectedStageWords = selectedStage ? words?.[selectedStage] ?? [] : [];
 
   if (isLoading) {
-    return <div className="mt-10">Loading...</div>;
+    return <div className="mt-10">{t("loading")}</div>;
   }
 
   if (isError) {
-    return <div className="mt-10">Something went wrong</div>;
+    return <div className="mt-10">{t("generalError")}</div>;
   }
 
   return (

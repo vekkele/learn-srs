@@ -13,7 +13,7 @@ const buttonClass = clsx(
 );
 
 const Dashboard: NextPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard");
   const { data: reviewsCount } = api.learn.getReviewsCount.useQuery();
 
   return (
@@ -25,14 +25,14 @@ const Dashboard: NextPage = () => {
             href="/card/add"
             className={clsx(buttonClass, "flex flex-col items-center")}
           >
-            {t("dashboard.addWord")}
+            {t("addWord")}
           </Link>
 
           <Link
             href="/review"
             className={clsx(buttonClass, "flex items-center justify-between")}
           >
-            <h2>{t("dashboard.reviews")}</h2>
+            <h2>{t("reviews")}</h2>
             <h3 className="ml-4 rounded-full bg-blue-400 px-3 text-sm">
               {reviewsCount}
             </h3>
@@ -53,7 +53,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      ...(await getServerTranslations(ctx.locale)),
+      ...(await getServerTranslations(ctx.locale, [
+        "common",
+        "auth",
+        "dashboard",
+      ])),
     },
   };
 };

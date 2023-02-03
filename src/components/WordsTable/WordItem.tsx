@@ -1,16 +1,22 @@
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 import type { Word } from "./types";
 
 interface WordItemProps {
   word: Word;
 }
 
-const dateFormat = new Intl.DateTimeFormat(undefined, {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
-
 const WordItem = ({ word }: WordItemProps) => {
   const translations = word.translations.map((t) => t.translation).join(", ");
+  const { locale } = useRouter();
+  const dateFormat = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        dateStyle: "short",
+        timeStyle: "short",
+      }),
+    [locale]
+  );
 
   return (
     <article className="flex text-white">

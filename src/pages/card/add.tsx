@@ -1,16 +1,19 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import { api } from "../../utils/api";
+import { getServerTranslations } from "../../utils/i18n";
 
 const AddPage: NextPage = () => {
   const [word, setWord] = useState("");
   const [translations, setTranslations] = useState<string[]>([""]);
   const mutation = api.learn.addWord.useMutation();
   const router = useRouter();
+  const { t } = useTranslation("addWord");
 
   const filledTranslations = translations.reduce<string[]>((prev, t) => {
     const trimmed = t.trim();
@@ -51,20 +54,20 @@ const AddPage: NextPage = () => {
         onSubmit={(e) => void onSubmit(e)}
       >
         <TextField
-          label="Word"
+          label={t("word.label")}
           name="word"
           className="mb-6"
-          placeholder="Enter a word you want to learn"
+          placeholder={t("word.placeholder")}
           onChange={(e) => setWord(e.target.value)}
           required
         />
-        <h3 className="mb-2 font-bold">Translations</h3>
+        <h3 className="mb-2 font-bold">{t("translations.label")}</h3>
         {translations.map((translation, i) => (
           <div key={i} className="mb-4 flex items-center">
             <TextField
               name="translation"
               value={translation}
-              placeholder="Enter a word translation"
+              placeholder={t("translations.placeholder")}
               onChange={(e) => changeTranslation(e.target.value, i)}
             />
             {translations.length > 1 && (
@@ -73,7 +76,7 @@ const AddPage: NextPage = () => {
                 type="button"
                 onClick={() => removeTranslation(i)}
               >
-                Remove
+                {t("actions.remove")}
               </button>
             )}
           </div>
@@ -83,15 +86,23 @@ const AddPage: NextPage = () => {
             className="mr-3"
             onClick={() => void router.push("/dashboard")}
           >
-            Cancel
+            {t("actions.cancel")}
           </Button>
           <Button disabled={!canSubmit} type="submit">
-            Save
+            {t("actions.save")}
           </Button>
         </div>
       </form>
     </main>
   );
+};
+
+export const getServerSideProps = async ({
+  locale,
+}: GetServerSidePropsContext) => {
+  const translations = await getServerTranslations(locale, ["addWord"]);
+
+  return { props: { ...translations } };
 };
 
 export default AddPage;

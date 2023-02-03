@@ -1,6 +1,4 @@
 {
-  "dashboard": {
-    "addWord": "Add Word",
-    "reviews": "Reviews"
-  }
+  "loading": "Loading...",
+  "generalError": "Something went wrong"
 }

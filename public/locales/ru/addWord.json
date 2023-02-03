@@ -1,0 +1,9 @@
+{
+  "word.label": "Слово",
+  "word.placeholder": "Введите слово, которое вы хотите выучить",
+  "translations.label": "Значения",
+  "translations.placeholder": "Введите значение слова",
+  "actions.remove": "Удалить",
+  "actions.cancel": "Отмена",
+  "actions.save": "Сохранить"
+}
