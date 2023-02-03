@@ -1,4 +1,5 @@
 {
   "loading": "Загрузка...",
-  "generalError": "Что-то пошло не так"
+  "generalError": "Что-то пошло не так",
+  "language": "Язык"
 }

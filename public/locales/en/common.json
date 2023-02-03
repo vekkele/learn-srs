@@ -1,4 +1,5 @@
 {
   "loading": "Loading...",
-  "generalError": "Something went wrong"
+  "generalError": "Something went wrong",
+  "language": "Language"
 }
