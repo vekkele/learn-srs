@@ -26,7 +26,7 @@ const WordItem = ({ word }: WordItemProps) => {
       <h5 className="w-52 flex-grow-[4] text-base capitalize text-neutral-300">
         {translations}
       </h5>
-      <h6 className="ml-2 w-36">{dateFormat.format(word.nextLearn)}</h6>
+      <h6 className="ml-2 w-36">{dateFormat.format(word.nextReview)}</h6>
     </article>
   );
 };

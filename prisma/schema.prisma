@@ -24,7 +24,7 @@ model Word {
     id           String        @id @default(cuid())
     word         String
     translations Translation[]
-    nextLearn    DateTime
+    nextReview   DateTime
     user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId       String
     stage        Stage         @relation(fields: [stageId], references: [id])

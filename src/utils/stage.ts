@@ -1,10 +1,10 @@
 import colors from "tailwindcss/colors";
 
-export const computeNextLearn = (hoursToNextStage: number) => {
-  const nextLearn = new Date(Date.now() + hoursToNextStage * 60 * 60 * 1000);
-  nextLearn.setMinutes(0, 0, 0);
+export const computeNextReview = (hoursToNextStage: number) => {
+  const nextReview = new Date(Date.now() + hoursToNextStage * 60 * 60 * 1000);
+  nextReview.setMinutes(0, 0, 0);
 
-  return nextLearn;
+  return nextReview;
 };
 
 export const getNextStage = (

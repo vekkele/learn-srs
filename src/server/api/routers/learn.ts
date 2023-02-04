@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  computeNextLearn,
+  computeNextReview,
   getNextStage,
   getStageFromLevel,
 } from "../../../utils/stage";
@@ -33,7 +33,7 @@ export const learnRouter = createTRPCRouter({
     const reviewsCount = await ctx.prisma.word.count({
       where: {
         userId: ctx.session.user.id,
-        nextLearn: {
+        nextReview: {
           lte: new Date(),
         },
       },
@@ -46,7 +46,7 @@ export const learnRouter = createTRPCRouter({
     const words = await ctx.prisma.word.findMany({
       where: {
         userId: ctx.session.user.id,
-        nextLearn: {
+        nextReview: {
           lte: new Date(),
         },
       },
@@ -98,7 +98,7 @@ export const learnRouter = createTRPCRouter({
                 id: stage.id,
               },
             },
-            nextLearn: computeNextLearn(stage.hoursToNext),
+            nextReview: computeNextReview(stage.hoursToNext),
             translations: {
               create: translations.map((translation) => ({
                 translation,
@@ -155,14 +155,14 @@ export const learnRouter = createTRPCRouter({
           throw new Error(`could not set stage to ${nextLevel}`);
         }
 
-        const nextLearn = computeNextLearn(nextStage.hoursToNext);
+        const nextReview = computeNextReview(nextStage.hoursToNext);
 
         return tx.word.update({
           where: {
             id: input.wordId,
           },
           data: {
-            nextLearn,
+            nextReview,
             stage: {
               connect: {
                 id: nextStage.id,
