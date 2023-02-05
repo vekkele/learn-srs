@@ -7,6 +7,7 @@ import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import { api } from "../../utils/api";
 import { getServerTranslations } from "../../utils/i18n";
+import { checkAuthedSession } from "../../utils/auth";
 
 const AddPage: NextPage = () => {
   const [word, setWord] = useState("");
@@ -97,10 +98,13 @@ const AddPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps = async ({
-  locale,
-}: GetServerSidePropsContext) => {
-  const translations = await getServerTranslations(locale, ["addWord"]);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const { redirect } = await checkAuthedSession(ctx);
+  if (redirect) {
+    return { redirect };
+  }
+
+  const translations = await getServerTranslations(ctx.locale, ["addWord"]);
 
   return { props: { ...translations } };
 };
