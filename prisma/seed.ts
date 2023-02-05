@@ -1,68 +1,104 @@
 import { prisma } from "../src/server/db";
 
-const HOURS_IN_DAY = 24;
-const HOURS_IN_WEEK = HOURS_IN_DAY * 7;
-const HOURS_IN_MONTH = HOURS_IN_DAY * 30;
+const DAY = 24;
+const WEEK = DAY * 7;
+const MONTH = DAY * 30;
 
 async function main() {
-  const apprenice1 = await prisma.stage.create({
-    data: {
+  const apprenice1 = await prisma.stage.upsert({
+    where: {
+      level: 1,
+    },
+    update: {},
+    create: {
       level: 1,
       hoursToNext: 4,
     },
   });
 
-  const apprenice2 = await prisma.stage.create({
-    data: {
+  const apprenice2 = await prisma.stage.upsert({
+    where: {
+      level: 2,
+    },
+    update: {},
+    create: {
       level: 2,
       hoursToNext: 8,
     },
   });
 
-  const apprenice3 = await prisma.stage.create({
-    data: {
+  const apprenice3 = await prisma.stage.upsert({
+    where: {
       level: 3,
-      hoursToNext: HOURS_IN_DAY * 1,
+    },
+    update: {},
+    create: {
+      level: 3,
+      hoursToNext: DAY * 1,
     },
   });
 
-  const apprenice4 = await prisma.stage.create({
-    data: {
+  const apprenice4 = await prisma.stage.upsert({
+    where: {
       level: 4,
-      hoursToNext: HOURS_IN_DAY * 2,
+    },
+    update: {},
+    create: {
+      level: 4,
+      hoursToNext: DAY * 2,
     },
   });
 
-  const guru1 = await prisma.stage.create({
-    data: {
+  const guru1 = await prisma.stage.upsert({
+    where: {
       level: 5,
-      hoursToNext: HOURS_IN_WEEK * 1,
+    },
+    update: {},
+    create: {
+      level: 5,
+      hoursToNext: WEEK * 1,
     },
   });
 
-  const guru2 = await prisma.stage.create({
-    data: {
+  const guru2 = await prisma.stage.upsert({
+    where: {
       level: 6,
-      hoursToNext: HOURS_IN_WEEK * 2,
+    },
+    update: {},
+    create: {
+      level: 6,
+      hoursToNext: WEEK * 2,
     },
   });
 
-  const master = await prisma.stage.create({
-    data: {
+  const master = await prisma.stage.upsert({
+    where: {
       level: 7,
-      hoursToNext: HOURS_IN_MONTH * 1,
+    },
+    update: {},
+    create: {
+      level: 7,
+      hoursToNext: MONTH * 1,
     },
   });
 
-  const enlightened = await prisma.stage.create({
-    data: {
+  const enlightened = await prisma.stage.upsert({
+    where: {
       level: 8,
-      hoursToNext: HOURS_IN_MONTH * 4,
+    },
+    update: {},
+    create: {
+      level: 8,
+      hoursToNext: MONTH * 4,
     },
   });
 
-  const burned = await prisma.stage.create({
-    data: {
+  const burned = await prisma.stage.upsert({
+    where: {
+      level: 9,
+    },
+    update: {},
+    create: {
       level: 9,
       hoursToNext: 0,
     },
