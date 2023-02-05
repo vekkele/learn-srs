@@ -46,9 +46,9 @@ const Dashboard: NextPage = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const props = await checkAuthedSession(ctx);
-  if (props.redirect) {
-    return props;
+  const { redirect } = await checkAuthedSession(ctx);
+  if (redirect) {
+    return { redirect };
   }
 
   return {

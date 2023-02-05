@@ -10,6 +10,7 @@ const isAuthed = (session: Session | null): session is AuthedSession => {
 
 export const checkAuthedSession = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
+  type Result = GetServerSidePropsResult<unknown>;
 
   if (!isAuthed(session)) {
     return {
@@ -17,8 +18,8 @@ export const checkAuthedSession = async (ctx: GetServerSidePropsContext) => {
         destination: `/api/auth/signin?error=SessionRequired&callbackUrl=${ctx.resolvedUrl}`,
         permanent: false,
       },
-    } satisfies GetServerSidePropsResult<unknown>;
+    } satisfies Result;
   }
 
-  return { session };
+  return { props: { session } } satisfies Result;
 };
