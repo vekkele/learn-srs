@@ -89,7 +89,11 @@ const AddPage: NextPage = () => {
           >
             {t("actions.cancel")}
           </Button>
-          <Button disabled={!canSubmit} type="submit">
+          <Button
+            disabled={!canSubmit}
+            type="submit"
+            loading={mutation.isLoading}
+          >
             {t("actions.save")}
           </Button>
         </div>
