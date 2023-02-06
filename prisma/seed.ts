@@ -5,7 +5,7 @@ const WEEK = DAY * 7;
 const MONTH = DAY * 30;
 
 async function main() {
-  const apprenice1 = await prisma.stage.upsert({
+  const apprentice1 = await prisma.stage.upsert({
     where: {
       level: 1,
     },
@@ -16,7 +16,7 @@ async function main() {
     },
   });
 
-  const apprenice2 = await prisma.stage.upsert({
+  const apprentice2 = await prisma.stage.upsert({
     where: {
       level: 2,
     },
@@ -27,7 +27,7 @@ async function main() {
     },
   });
 
-  const apprenice3 = await prisma.stage.upsert({
+  const apprentice3 = await prisma.stage.upsert({
     where: {
       level: 3,
     },
@@ -38,7 +38,7 @@ async function main() {
     },
   });
 
-  const apprenice4 = await prisma.stage.upsert({
+  const apprentice4 = await prisma.stage.upsert({
     where: {
       level: 4,
     },
@@ -105,10 +105,10 @@ async function main() {
   });
 
   const stages = {
-    apprenice1,
-    apprenice2,
-    apprenice3,
-    apprenice4,
+    apprentice1,
+    apprentice2,
+    apprentice3,
+    apprentice4,
     guru1,
     guru2,
     master,
