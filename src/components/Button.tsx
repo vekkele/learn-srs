@@ -1,5 +1,10 @@
 import clsx from "clsx";
 import type { ButtonHTMLAttributes } from "react";
+import Spinner from "./Spinner";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  loading?: boolean;
+}
 
 const Button = ({
   onClick,
@@ -7,21 +12,28 @@ const Button = ({
   children,
   className = "",
   type = "button",
+  loading = false,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: ButtonProps) => {
   return (
     <button
       className={clsx(
         className,
-        disabled ? "cursor-not-allowed opacity-40" : "hover:bg-blue-800",
-        "rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white no-underline transition"
+        "relative rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white no-underline transition",
+        {
+          "cursor-not-allowed opacity-40": disabled,
+          "hover:bg-blue-800": !disabled && !loading,
+        }
       )}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       type={type}
       {...props}
     >
-      {children}
+      <div className={clsx({ "opacity-0": loading })}>{children}</div>
+      {loading && (
+        <Spinner className="absolute top-0 bottom-0 left-0 right-0 m-auto" />
+      )}
     </button>
   );
 };
