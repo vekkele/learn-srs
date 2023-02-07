@@ -13,7 +13,8 @@ const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {
   const { t } = useTranslation("dashboard");
 
   return (
-    <div
+    <button
+      type="button"
       onClick={onClick}
       style={{ backgroundColor: color }}
       className={clsx(
@@ -25,7 +26,7 @@ const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {
       <h5 className="text-md capitalize text-neutral-300">
         {t(`stages.${title}`)}
       </h5>
-    </div>
+    </button>
   );
 };
 
