@@ -1,4 +1,10 @@
+import { DateTime } from "luxon";
 import { z } from "zod";
+import type { Forecast } from "../../../utils/forecast";
+import {
+  getLastCumulativeReviews,
+  weekdayNumsToNames,
+} from "../../../utils/forecast";
 import {
   computeNextReview,
   getNextStage,
@@ -171,5 +177,61 @@ export const learnRouter = createTRPCRouter({
           },
         });
       });
+    }),
+
+  getReviewForecast: protectedProcedure
+    .input(
+      z.object({
+        timezone: z.string().min(1),
+      })
+    )
+    .query(async ({ input: { timezone }, ctx }) => {
+      const plusWeek = DateTime.now()
+        .setZone(timezone)
+        .plus({ weeks: 1 })
+        .startOf("day");
+
+      const words = await ctx.prisma.word.groupBy({
+        by: ["nextReview"],
+        where: {
+          nextReview: {
+            gt: new Date(),
+            lt: plusWeek.toJSDate(),
+          },
+        },
+        _count: {
+          id: true,
+        },
+        orderBy: {
+          nextReview: "asc",
+        },
+      });
+
+      const forecast = words.reduce<Forecast>((prev, reviewStep) => {
+        const reviewDate = DateTime.fromJSDate(reviewStep.nextReview).setZone(
+          timezone
+        );
+        const weekday = reviewDate.weekday;
+        const weekdayName = weekdayNumsToNames[weekday];
+
+        const reviewsCount = reviewStep._count.id;
+        const currentDay = prev[weekdayName] ?? [];
+
+        const prevCumulationCount = getLastCumulativeReviews(prev, weekdayName);
+
+        return {
+          ...prev,
+          [weekdayName]: [
+            ...currentDay,
+            {
+              time: reviewDate.toJSDate(),
+              newReviews: reviewsCount,
+              cumulativeReviews: prevCumulationCount + reviewsCount,
+            },
+          ],
+        };
+      }, {});
+
+      return forecast;
     }),
 });
