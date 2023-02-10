@@ -23,7 +23,7 @@ const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {
       )}
     >
       <h3 className="mb-1 text-2xl font-bold">{wordsCount}</h3>
-      <h5 className="text-md capitalize">{t(`stages.${title}`)}</h5>
+      <h4 className="text-md capitalize">{t(`stages.${title}`)}</h4>
     </button>
   );
 };
