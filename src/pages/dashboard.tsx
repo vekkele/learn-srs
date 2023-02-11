@@ -24,8 +24,8 @@ const Dashboard: NextPage = () => {
     <>
       <AuthHeader />
       <main className="flex flex-col items-center p-10">
-        <section className="flex w-full items-start justify-center">
-          <section className="mr-auto grid auto-cols-fr grid-flow-col gap-5">
+        <section className="flex w-full flex-col items-center justify-center md:flex-row md:items-start">
+          <section className="mb-6 grid auto-cols-fr grid-flow-row gap-5 md:mr-auto md:grid-flow-col">
             <Link
               href="/card/add"
               className={clsx(buttonClass, "flex flex-col items-center")}
