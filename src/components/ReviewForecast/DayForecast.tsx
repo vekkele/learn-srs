@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import { useTranslation } from "next-i18next";
 import { useMemo, useState } from "react";
 import type { HourForecast } from "../../utils/forecast";
+import ForecastNumbers from "./ForecastNumbers";
 
 type DayForecastProps = {
   weekday: WeekNumbers;
@@ -22,7 +23,8 @@ const DayForecast = ({
   } = useTranslation("dashboard");
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((v) => !v);
-  const hasForecast = forecast && forecast.length;
+  const hasForecast = !!forecast && !!forecast.length;
+  const lastForecast = hasForecast ? forecast.at(-1) ?? null : null;
 
   const formattedWeekday = useMemo(() => {
     if (weekday === currentWeekday) return t("forecast.today");
@@ -41,26 +43,35 @@ const DayForecast = ({
       <button
         disabled={!hasForecast}
         onClick={toggle}
-        className={clsx("text-lg capitalize", !hasForecast && "opacity-60")}
+        className={clsx(
+          "flex w-full items-center justify-between text-lg capitalize",
+          !hasForecast && "opacity-60"
+        )}
       >
         <span>{formattedWeekday}</span>
+        {lastForecast && !open && (
+          <ForecastNumbers
+            newReviews={lastForecast.newReviews}
+            cumulativeReviews={lastForecast.cumulativeReviews}
+          />
+        )}
       </button>
       {open && hasForecast && (
-        <div className="mt-1 border-t border-neutral-600">
+        <div className="border-t border-neutral-600">
           {forecast.map((hour) => {
             const time = hour.time.toLocaleTimeString(language, {
               timeStyle: "short",
             });
 
             return (
-              <div key={time} className="flex pt-2">
+              <div key={time} className="flex items-center">
                 <span>{time}</span>
                 <span className="grow"></span>
-                <span className="mr-2 border-r border-neutral-600 pr-2">
-                  <span className="text-neutral-500">+</span>
-                  {hour.newReviews}
-                </span>
-                <span className="w-8">{hour.cumulativeReviews}</span>
+                <ForecastNumbers
+                  newReviews={hour.newReviews}
+                  cumulativeReviews={hour.cumulativeReviews}
+                  hasSpacing
+                />
               </div>
             );
           })}
