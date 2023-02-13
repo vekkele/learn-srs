@@ -45,17 +45,27 @@ const DayForecast = ({
       >
         <span>{formattedWeekday}</span>
       </button>
-      <div>
-        {open &&
-          hasForecast &&
-          forecast.map((hour) => {
+      {open && hasForecast && (
+        <div className="mt-1 border-t border-neutral-600">
+          {forecast.map((hour) => {
             const time = hour.time.toLocaleTimeString(language, {
               timeStyle: "short",
             });
 
-            return <div key={time}>{time}</div>;
+            return (
+              <div key={time} className="flex pt-2">
+                <span>{time}</span>
+                <span className="grow"></span>
+                <span className="mr-2 border-r border-neutral-600 pr-2">
+                  <span className="text-neutral-500">+</span>
+                  {hour.newReviews}
+                </span>
+                <span className="w-8">{hour.cumulativeReviews}</span>
+              </div>
+            );
           })}
-      </div>
+        </div>
+      )}
     </article>
   );
 };
