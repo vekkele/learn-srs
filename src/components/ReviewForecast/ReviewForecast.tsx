@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { DateTime } from "luxon";
 import type { RouterOutputs } from "../../utils/api";
 import { weekdayNamesToNums, weekdayNumsToNames } from "../../utils/forecast";
@@ -17,7 +18,13 @@ const ReviewForecast = ({ forecast }: ReviewForecastProps) => {
   ];
 
   return (
-    <section className="rounded-md bg-slate-800 px-5 py-3">
+    <section
+      className={clsx(
+        "mx-[5%] min-w-max max-w-[90%] grow self-stretch rounded-md bg-slate-800 px-5 py-3",
+        "sm:mx-[10%] sm:max-w-[80%]",
+        "md:ml-12 md:mr-0 md:max-w-md md:grow md:self-auto"
+      )}
+    >
       <h2 className="text-2xl font-bold">Review Forecast</h2>
       <div className="flex flex-col gap-2">
         {weekFromToday.map((weekday) => {
