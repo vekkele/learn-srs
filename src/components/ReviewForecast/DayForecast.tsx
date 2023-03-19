@@ -26,6 +26,8 @@ const DayForecast = ({
   const hasForecast = !!forecast && !!forecast.length;
   const lastForecast = hasForecast ? forecast.at(-1) ?? null : null;
 
+  const newForDay = forecast?.reduce((acc, f) => acc + f.newReviews, 0) ?? 0;
+
   const formattedWeekday = useMemo(() => {
     if (weekday === currentWeekday) return t("forecast.today");
 
@@ -51,7 +53,7 @@ const DayForecast = ({
         <span>{formattedWeekday}</span>
         {lastForecast && !open && (
           <ForecastNumbers
-            newReviews={lastForecast.newReviews}
+            newReviews={newForDay}
             cumulativeReviews={lastForecast.cumulativeReviews}
           />
         )}
