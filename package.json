@@ -11,7 +11,7 @@
     "db:deploy": "prisma generate && prisma migrate deploy && prisma db seed",
     "db:start": "docker compose --file ./prisma/dev/docker-compose.yml up -d",
     "db:remove": "docker compose --file ./prisma/dev/docker-compose.yml down -v",
-    "db:wait": "./wait-until.sh \"docker compose --file ./prisma/dev/docker-compose.yml exec -T -e PGPASSWORD=postgres db psql -U postgres postgres -c 'select 1'\"",
+    "db:wait": "./wait-until.sh \"docker compose --file ./prisma/dev/docker-compose.yml exec -T db mysql -uroot -psecure learn-srs -e 'select 1'\"",
     "db:init": "npm run db:start && npm run db:wait && prisma migrate dev && npm run db:seed",
     "db:seed": "NODE_ENV=development prisma db seed"
   },

@@ -1,16 +1,15 @@
 services:
   db:
-    image: postgres:latest
-    container_name: postgres
+    image: mysql:latest
+    container_name: mysql
     ports:
-      - 5432:5432
+      - 3306:3306
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=learn-srs
+      - MYSQL_ROOT_PASSWORD=secure
+      - MYSQL_DATABASE=learn-srs
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - mysqldata:/var/lib/mysql
     restart: unless-stopped
   
 volumes:
-  pgdata:
+  mysqldata:
