@@ -1,28 +1,25 @@
-# Create T3 App
+# Learn SRS
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+App that helps you learn foreign words using [SRS (space repetition system)](https://knowledge.wanikani.com/wanikani/srs/)
 
-## What's next? How do I make an app with this?
+You can add new word as well as its definition or translation. Then after several hours you can review your words and try to input its definition. If you are correct time gap before next review increases.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Development
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+1. Run `npm install`
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+2. To start development database you will need `docker` installed. For the first time you need to run `npm run db:init` to start db docker container, initialize database and populate it with necessary data
 
-## Learn More
+3. You must specify env variables in `.env` file. You can look at `.env.example` to see which variables you will need
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+3. Run `npm run dev` to start dev server
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Deployment
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+This app uses [Vercel](https://vercel.com) for deployment
 
-## How do I deploy this?
+After you connect github repo with Vercel you need to make small adjustments:
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+1. Override default build command with `npm run db:deploy && npm run build` to run database migrations before building the app
+
+2. Remember to provide all production environment variables from `.env.example` in Vercel app settings
