@@ -19,7 +19,7 @@ const Button = ({
     <button
       className={clsx(
         className,
-        "relative rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white no-underline transition",
+        "relative whitespace-nowrap rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white no-underline transition",
         {
           "cursor-not-allowed opacity-40": disabled,
           "hover:bg-blue-800": !disabled && !loading,
