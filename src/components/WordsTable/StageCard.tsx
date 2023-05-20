@@ -1,12 +1,13 @@
 import clsx from "clsx";
 import { useTranslation } from "next-i18next";
 import type { StageTitle } from "../../utils/stage";
+import type { MouseEventHandler } from "react";
 
 interface StageCardProps {
   title: StageTitle;
   wordsCount: number;
   color: string;
-  onClick: VoidFunction;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const StageCard = ({ title, color, wordsCount, onClick }: StageCardProps) => {

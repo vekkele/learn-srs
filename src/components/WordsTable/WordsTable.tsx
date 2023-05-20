@@ -1,3 +1,4 @@
+import type { MouseEventHandler } from "react";
 import { useState } from "react";
 import { useTranslation } from "next-i18next";
 import { api } from "../../utils/api";
@@ -42,14 +43,16 @@ const WordsTable = () => {
     <section className="my-5 flex w-full flex-col items-center">
       <div
         className={clsx(
-          "flex w-full snap-x snap-mandatory gap-2 overflow-x-scroll whitespace-nowrap px-2",
+          "flex w-full gap-2 whitespace-nowrap px-2",
+          "snap-x snap-mandatory overflow-x-scroll scroll-smooth",
           "sm:grid sm:auto-cols-fr sm:grid-flow-col",
           "md:gap-4 md:px-0"
         )}
       >
         {stages.map((stage) => {
           const count = words[stage.title]?.length ?? 0;
-          const onClick = () => {
+          const onClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+            e.currentTarget.scrollIntoView();
             setSelectedStage((prev) =>
               prev === stage.title ? null : stage.title
             );
