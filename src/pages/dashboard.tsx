@@ -23,7 +23,12 @@ const Dashboard: NextPage = () => {
   return (
     <>
       <AuthHeader />
-      <main className="flex max-w-7xl flex-col items-center self-center md:m-10">
+      <main
+        className={clsx(
+          "mb-6 flex w-full flex-col items-center self-center",
+          "md:m-10 md:mb-10 md:w-auto md:max-w-7xl"
+        )}
+      >
         <section className="flex w-full flex-col items-center justify-center md:flex-row md:items-start">
           <section className="mb-6 grid auto-cols-fr grid-flow-row gap-5 sm:grid-flow-col md:mr-auto">
             <Link

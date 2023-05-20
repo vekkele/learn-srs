@@ -6,6 +6,7 @@ import { getStageFromLevel, stageMap, stages } from "../../utils/stage";
 import StageCard from "./StageCard";
 import type { Word } from "./types";
 import WordItem from "./WordItem";
+import clsx from "clsx";
 
 type WordsByStages = Partial<Record<StageTitle, Word[]>>;
 
@@ -38,8 +39,14 @@ const WordsTable = () => {
   }
 
   return (
-    <section className="my-5 flex flex-col items-center">
-      <div className="grid auto-cols-fr grid-flow-col gap-4">
+    <section className="my-5 flex w-full flex-col items-center">
+      <div
+        className={clsx(
+          "flex w-full gap-2 overflow-x-scroll whitespace-nowrap px-2",
+          "sm:grid sm:auto-cols-fr sm:grid-flow-col",
+          "md:gap-4 md:px-0"
+        )}
+      >
         {stages.map((stage) => {
           const count = words[stage.title]?.length ?? 0;
           const onClick = () => {
@@ -63,7 +70,7 @@ const WordsTable = () => {
       {selectedStage && selectedStageWords.length !== 0 && (
         <section
           style={{ backgroundColor: stageMap.get(selectedStage)?.color }}
-          className="mt-3 w-full rounded-lg py-2 px-4"
+          className="mx-auto mt-3 w-[98%] rounded-lg py-2 px-4 md:w-full"
         >
           {selectedStageWords?.map((word) => (
             <WordItem key={word.id} word={word} />
