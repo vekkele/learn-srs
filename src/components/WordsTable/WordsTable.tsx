@@ -42,7 +42,7 @@ const WordsTable = () => {
     <section className="my-5 flex w-full flex-col items-center">
       <div
         className={clsx(
-          "flex w-full gap-2 overflow-x-scroll whitespace-nowrap px-2",
+          "flex w-full snap-x snap-mandatory gap-2 overflow-x-scroll whitespace-nowrap px-2",
           "sm:grid sm:auto-cols-fr sm:grid-flow-col",
           "md:gap-4 md:px-0"
         )}
