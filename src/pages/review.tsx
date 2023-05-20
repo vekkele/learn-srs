@@ -80,9 +80,16 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
         >
           <h1 className="text-7xl uppercase text-white">{word?.word}</h1>
         </section>
-        <section className="flex grow items-start">
-          <div className="flex w-full flex-col items-center">
-            <div className="relative w-3/4 -translate-y-1/2">
+        <section className="flex grow items-start justify-center">
+          <div className="flex w-full max-w-4xl flex-col items-center">
+            <div
+              className={clsx(
+                "relative w-full -translate-y-1/2",
+                "grid grid-cols-[1fr_66%_1fr] items-center",
+                "sm:grid-cols-[1fr_75%_1fr]"
+              )}
+            >
+              <div></div>
               <input
                 type="text"
                 name="guess"
@@ -91,7 +98,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
                 placeholder={t("translationPlaceholder")}
                 onChange={(e) => setGuess(e.target.value)}
                 className={clsx(
-                  "w-full rounded-xl border px-2 py-4 text-center text-xl text-neutral-900",
+                  "rounded-xl border px-2 py-4 text-center text-xl text-neutral-900",
                   {
                     "border-slate-300 bg-white": correct === null,
                     "border-green-800 bg-green-600": correct === true,
@@ -101,7 +108,7 @@ const ReviewPage: NextPage<ReviewPageProps> = ({ words }) => {
               />
 
               <button
-                className="absolute top-0 bottom-0 my-auto ml-2 h-12 w-12 rounded-full bg-slate-600 text-white"
+                className="my-auto mx-auto h-12 w-12 rounded-full bg-slate-600 text-white"
                 onClick={check}
               >
                 {">>"}
