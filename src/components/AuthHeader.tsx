@@ -11,9 +11,13 @@ const AuthHeader = () => {
   const handleSignOut = () => void signOut({ callbackUrl: "/" });
 
   return (
-    <header className="flex items-center justify-end px-4 py-3">
+    <header className="flex items-center justify-end gap-2 px-4 py-3">
       {session ? (
-        <Button onClick={handleSignOut}>{t("signOut")}</Button>
+        <>
+          <p>{t("connectHint")}</p>
+          <Button onClick={handleSignIn}>{t("connect")}</Button>
+          <Button onClick={handleSignOut}>{t("signOut")}</Button>
+        </>
       ) : (
         <Button onClick={handleSignIn}>{t("signIn")}</Button>
       )}
