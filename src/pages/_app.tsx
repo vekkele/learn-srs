@@ -28,7 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta
           name="theme-color"
           media="(prefers-color-scheme: light)"
-          content={colors.slate[50]}
+          content={colors.neutral[100]}
           key="theme-color-light"
         />
         <link rel="icon" href="/favicon.ico" />

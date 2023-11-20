@@ -11,7 +11,7 @@ const PageWrapper = ({ children }: PageWrapperProps) => {
     <div
       className={clsx(
         "relative flex min-h-screen flex-col items-stretch",
-        "bg-slate-50 text-neutral-900",
+        "bg-neutral-100 text-neutral-900",
         "dark:bg-slate-900 dark:text-white"
       )}
     >

@@ -20,9 +20,10 @@ const ReviewForecast = ({ forecast }: ReviewForecastProps) => {
   return (
     <section
       className={clsx(
-        "mx-[5%] min-w-max max-w-[90%] grow self-stretch rounded-md bg-slate-800 px-5 py-3",
+        "mx-[5%] min-w-max max-w-[90%] grow self-stretch rounded-md bg-slate-200 px-5 py-3",
         "sm:mx-[10%] sm:max-w-[80%]",
-        "md:ml-12 md:mr-0 md:max-w-md md:grow md:self-auto"
+        "md:ml-12 md:mr-0 md:max-w-md md:grow md:self-auto",
+        "dark:bg-slate-800"
       )}
     >
       <h2 className="text-2xl font-bold">Review Forecast</h2>

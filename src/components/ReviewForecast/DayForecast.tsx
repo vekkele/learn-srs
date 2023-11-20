@@ -41,7 +41,7 @@ const DayForecast = ({
   }, [currentWeekday, language, t, weekday]);
 
   return (
-    <article className="rounded-md bg-slate-700 px-4 py-2">
+    <article className="rounded-md bg-slate-300 px-4 py-2 dark:bg-slate-700">
       <button
         disabled={!hasForecast}
         onClick={toggle}
