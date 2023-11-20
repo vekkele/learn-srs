@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { DateTime } from "luxon";
+import { useTranslation } from "next-i18next";
 import type { RouterOutputs } from "../../utils/api";
 import { weekdayNamesToNums, weekdayNumsToNames } from "../../utils/forecast";
 import DayForecast from "./DayForecast";
@@ -9,6 +10,7 @@ interface ReviewForecastProps {
 }
 
 const ReviewForecast = ({ forecast }: ReviewForecastProps) => {
+  const { t } = useTranslation("dashboard");
   const currentWeekday = DateTime.now().weekday;
   const weekNums = Object.values(weekdayNamesToNums);
   const todayIndex = weekNums.indexOf(currentWeekday);
@@ -26,7 +28,7 @@ const ReviewForecast = ({ forecast }: ReviewForecastProps) => {
         "dark:bg-slate-800"
       )}
     >
-      <h2 className="text-2xl font-bold">Review Forecast</h2>
+      <h2 className="text-2xl font-bold">{t("forecast.title")}</h2>
       <div className="flex flex-col gap-2">
         {weekFromToday.map((weekday) => {
           return (

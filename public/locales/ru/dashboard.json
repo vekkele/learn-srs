@@ -6,5 +6,6 @@
   "stages.master": "Мастер",
   "stages.enlightened": "Просветленный",
   "stages.burned": "Выжжено",
-  "forecast.today": "Сегодня"
+  "forecast.today": "Сегодня",
+  "forecast.title": "Прогноз Повторений"
 }
